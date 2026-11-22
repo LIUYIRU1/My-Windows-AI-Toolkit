@@ -13,6 +13,8 @@ function Show-Menu {
     Write-Host "2. Test GitHub network connection (read-only)"
     Write-Host "3. Open local diagnostic reports folder"
     Write-Host "4. Open project folder"
+    Write-Host "5. Extended diagnostics (read-only, local report)"
+    Write-Host "6. Confirmed maintenance checks"
     Write-Host "Q. Quit"
     Write-Host ""
 }
@@ -41,6 +43,14 @@ while ($true) {
             Start-Process -FilePath explorer.exe -ArgumentList $reportDir
         }
         "4" { Start-Process -FilePath explorer.exe -ArgumentList $repoRoot }
+        "5" {
+            $script = Join-Path $PSScriptRoot "Extended-Diagnostics.ps1"
+            if (Test-Path $script) { & $script } else { Write-Host "Extended diagnostics script not found." -ForegroundColor Red; Read-Host "Press Enter" }
+        }
+        "6" {
+            $script = Join-Path $PSScriptRoot "Confirmed-Maintenance.ps1"
+            if (Test-Path $script) { & $script } else { Write-Host "Maintenance script not found." -ForegroundColor Red; Read-Host "Press Enter" }
+        }
         "Q" { break }
         default { Write-Host "Invalid option." -ForegroundColor Yellow; Start-Sleep -Seconds 1 }
     }
